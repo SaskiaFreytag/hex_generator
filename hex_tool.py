@@ -46,7 +46,13 @@ def parse_args() -> argparse.Namespace:
 def normalize_slack_args(args: argparse.Namespace) -> argparse.Namespace:
     if not args.slack_args:
         return args
-    tokens = [token for token in args.slack_args if token != "@hex_generator"]
+    tokens = [
+        token
+        for token in args.slack_args
+        if token != "@hex_generator"
+        and not (token.startswith("<@") and token.endswith(">"))
+    ]
+    tokens = [token for token in tokens if token.lower() not in {"code", "codes"}]
     if not tokens:
         return args
     if tokens[0].isdigit():
