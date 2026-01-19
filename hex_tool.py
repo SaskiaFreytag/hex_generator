@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate an 8-character hex code."""
+"""Generate random hex codes for CLI or Slack-style invocations."""
 
 from __future__ import annotations
 
@@ -34,7 +34,26 @@ def parse_args() -> argparse.Namespace:
         default=8,
         help="Length of each hex code (default: 8).",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "slack_args",
+        nargs="*",
+        help="Optional Slack-style input like: @hex_generator 10 codes",
+    )
+    args = parser.parse_args()
+    return normalize_slack_args(args)
+
+
+def normalize_slack_args(args: argparse.Namespace) -> argparse.Namespace:
+    if not args.slack_args:
+        return args
+    tokens = [token for token in args.slack_args if token != "@hex_generator"]
+    if not tokens:
+        return args
+    if tokens[0].isdigit():
+        args.count = int(tokens[0])
+    if len(tokens) > 1 and tokens[1].isdigit():
+        args.length = int(tokens[1])
+    return args
 
 
 def main() -> None:
