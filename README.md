@@ -47,3 +47,37 @@ With ~35 users and ~0.1 requests per user per day on weekdays, that is roughly:
 That traffic is extremely low and should typically fit within Cloud Run’s free tier for requests and
 CPU/memory time. Actual costs vary by region and resource settings, so check the Google Cloud
 pricing calculator for exact numbers before deployment.
+
+## Troubleshooting: Cloud Build permission denied
+
+If you see:
+
+```
+ERROR: (gcloud.builds.submit) PERMISSION_DENIED: The caller does not have permission.
+```
+
+This usually means the active `gcloud` account does not have access to the target project. Fix it by
+making sure the **same Google account** has access to the project you’re building in:
+
+1. Check which account is active:
+
+   ```bash
+   gcloud auth list
+   ```
+
+2. Switch to the account that has access to the project (or add that account to the project in
+   **IAM & Admin**):
+
+   ```bash
+   gcloud auth login
+   ```
+
+3. Make sure you are targeting the correct project ID:
+
+   ```bash
+   gcloud config set project PROJECT_ID
+   ```
+
+Your GitHub account does not affect Google Cloud permissions; access is controlled by the Google
+account you use with `gcloud`. Ensure that account has at least **Cloud Build Editor** and **Storage
+Admin** roles (or equivalent) for the project.
