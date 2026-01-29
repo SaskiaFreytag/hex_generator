@@ -64,7 +64,15 @@ def handle_hex() -> tuple[str, int] | tuple[dict[str, str], int]:
         return jsonify({"response_type": "ephemeral", "text": str(exc)}), 200
 
     codes = [generate_hex_code(length) for _ in range(count)]
-    return jsonify({"response_type": "in_channel", "text": "\n".join(codes)}), 200
+    return (
+        jsonify(
+            {
+                "response_type": "in_channel",
+                "attachments": [{"color": "good", "text": "\n".join(codes)}],
+            }
+        ),
+        200,
+    )
 
 
 if __name__ == "__main__":

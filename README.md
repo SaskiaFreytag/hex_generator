@@ -81,3 +81,19 @@ making sure the **same Google account** has access to the project you’re build
 Your GitHub account does not affect Google Cloud permissions; access is controlled by the Google
 account you use with `gcloud`. Ensure that account has at least **Cloud Build Editor** and **Storage
 Admin** roles (or equivalent) for the project.
+
+### Grant Cloud Build + Storage roles (Console)
+
+To ensure `sas.freytag@gmail.com` (or any account) has the required access:
+
+1. Open **Google Cloud Console** → **IAM & Admin** → **IAM**.
+2. Select the correct project (top project picker).
+3. Click **Grant Access**.
+4. In **New principals**, enter the account email (e.g., `sas.freytag@gmail.com`).
+5. Add roles:
+   - **Cloud Build Editor** (`roles/cloudbuild.builds.editor`)
+   - **Storage Admin** (`roles/storage.admin`)
+6. Click **Save**.
+
+If you don’t see **IAM & Admin**, you may not have permission to grant roles. In that case, ask a
+project owner/admin to add the account for you.
